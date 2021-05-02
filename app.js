@@ -17,11 +17,11 @@ app.use('', user)
 
 Connection
   .authenticate()
-  .catch(err => console.error(err,'hhhhhhhhhhhhhhhhhhhh'));
+  .catch(err => console.error(err));
 
 Connection
   .sync()
-  .catch(err => console.error(err,'jjjjjjjj'));
+  .catch(err => console.error(err));
 
 //Listener
 app.listen(port, () => console.log('Server Starts on localhost', port));

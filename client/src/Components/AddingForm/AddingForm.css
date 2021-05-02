@@ -1,0 +1,13 @@
+table{
+    margin: 100px auto;
+    border-collapse: collapse;
+}
+tr{
+    border-bottom: 0.5px solid rgba(93, 110, 151, 0.4);
+}
+td{
+    width: 200px;
+}
+.form_wrapper{
+    width:100%
+}

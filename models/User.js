@@ -8,10 +8,14 @@ const User = Connection.define('users', {
     primaryKey: true,
     allowNull: false
   },
-  name: {
-    type: Sequelize.STRING,
+  userId: {
+    type: Sequelize.INTEGER,
     allowNull: false
   },
+  // project: {
+  //   type: Sequelize.STRING,
+  //   allowNull: false
+  // },
   date_registration:{
     type: Sequelize.DATEONLY,
     allowNull: false

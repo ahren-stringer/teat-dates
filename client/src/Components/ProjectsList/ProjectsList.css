@@ -1,0 +1,18 @@
+.list_wrapper{
+    width:300px;
+    height:100vh;
+    background-color: #fff;
+    box-shadow: 4px 0px 10px rgba(93, 109, 151, 0.1);
+}
+.list{
+    padding: 0;
+    border-bottom: 0.5px solid rgba(93, 110, 151, 0.4);
+}
+.list_item{
+    border-bottom: 0.5px solid rgba(93, 110, 151, 0.4);
+    height: 50px;
+    line-height: 50px;
+    text-align: left;
+    padding-left: 53px;
+    cursor: pointer;
+}
