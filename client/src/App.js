@@ -1,12 +1,11 @@
 import './App.css';
-import AddingForm from './Components/AddingForm/AddingForm';
-import ProjectsList from './Components/ProjectsList/ProjectsList';
+import Main from './Components/Main/Main';
+import { Route, withRouter } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
-    <ProjectsList/>
-      <AddingForm/>
+      <Route exact path="/:project?" render={() => <Main />} />
     </div>
   );
 }

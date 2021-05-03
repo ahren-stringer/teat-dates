@@ -5,7 +5,10 @@ box-shadow: 10px 10px 70px rgba(93, 109, 151, 0.5);
     display: flex;
     color: #5D6D97;
 }
-
+a{
+  text-decoration: none;
+  color: #5D6D97;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

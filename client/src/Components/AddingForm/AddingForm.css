@@ -1,13 +1,56 @@
 table{
-    margin: 100px auto;
     border-collapse: collapse;
+    background: #FFFFFF;
+    border-radius: 6px;
+    width: 100%;
+    box-shadow: 4px 0px 10px rgb(93 109 151 / 10%);
+    margin: 44px 0 30px;
 }
 tr{
     border-bottom: 0.5px solid rgba(93, 110, 151, 0.4);
+    height: 50px;
+}
+tr:nth-last-child(-n+1){
+    border:none !important
 }
 td{
     width: 200px;
 }
 .form_wrapper{
     width:100%
+}
+.form_inner{
+    max-width: 800px;
+    margin: 36px auto 30px;
+}
+.title{
+    font-size: 20px;
+    text-align: left;
+}
+.table_input{
+    border: none;
+    text-align: center;
+}
+.table_input:focus {
+    outline: none;
+  }
+.btn_wrapper{
+    text-align: left;
+}
+.btn{
+    width: 189px;
+    height: 38px;
+    color: #FFFFFF;
+    background-color: #4A9DFF;
+    border-radius: 10px;
+    border: none;
+    margin-right: 10px;
+}
+.add_btn{
+    margin-bottom: 20px;
+}
+.project_validate{
+    font-size: 13px;
+    color: red;
+    margin-top: 10px;
 }

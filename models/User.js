@@ -12,10 +12,10 @@ const User = Connection.define('users', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-  // project: {
-  //   type: Sequelize.STRING,
-  //   allowNull: false
-  // },
+  project: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
   date_registration:{
     type: Sequelize.DATEONLY,
     allowNull: false

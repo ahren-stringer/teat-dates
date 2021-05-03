@@ -4,6 +4,7 @@ import * as process from 'process';
 import { Sequelize } from 'sequelize';
 import Connection from './models/Connection.js';
 import user from './routes/users.routes.js';
+import project from './routes/project.routes.js';
 //API Config
 const app = expess();
 const port = process.env.PORT || 8001;
@@ -14,6 +15,8 @@ app.use(Cors());
 
 // Пользователи
 app.use('', user)
+// Проекты
+app.use('', project)
 
 Connection
   .authenticate()

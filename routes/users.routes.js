@@ -20,16 +20,16 @@ router.get('/users', async (req, res) => {
         res.status(500).json({ message: 'Пользовательи не найдены' })
     }
 })
-router.get('/users/calculate', async (req, res) => {
+router.get('/users/calculate/:projectId', async (req, res) => {
     try {
         let users, count;
         let reqDate=new Date().getTime();
-        await Connection.query('Select COUNT(*) from users where (date_last_activity-date_registration)>7').then(([results, metadata]) => {
+        await Connection.query('Select COUNT(*) from users where (date_last_activity-date_registration)>7 and project='+req.params.projectId).then(([results, metadata]) => {
             console.log(results)
             // console.log(metadata)
             users=results
         })
-        await Connection.query('Select COUNT(*) from users').then(([results, metadata]) => {
+        await Connection.query('Select COUNT(*) from users where project='+req.params.projectId).then(([results, metadata]) => {
             console.log(results)
             count=results
         })
@@ -39,7 +39,7 @@ router.get('/users/calculate', async (req, res) => {
         let calculate=new Date().getTime();
         let RR7=(users[0].count*100)/count[0].count
         let calculateStop=new Date().getTime()
-        let calculateTime=await(calculate*1000-calculateStop*1000)
+        let calculateTime=await(calculate-calculateStop)
         console.log(calculateTime)
         console.log(RR7)
         let responseStart=new Date().getTime();
@@ -57,6 +57,7 @@ router.post('/users/register', async (req, res) => {
                 userId: item.userId,
                 date_registration: item.date_registration,
                 date_last_activity: item.date_last_activity,
+                project: item.project
             }
             let user = await User.create(postData)
             users.push(user)

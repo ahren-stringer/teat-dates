@@ -3,16 +3,46 @@
     height:100vh;
     background-color: #fff;
     box-shadow: 4px 0px 10px rgba(93, 109, 151, 0.1);
+    text-align: left;
+    position: fixed;
+    top: 0;
 }
 .list{
     padding: 0;
-    border-bottom: 0.5px solid rgba(93, 110, 151, 0.4);
+    /* border-bottom: 0.5px solid rgba(93, 110, 151, 0.4); */
+    margin: 0;
+}
+.list li {
+    border: none;
 }
 .list_item{
     border-bottom: 0.5px solid rgba(93, 110, 151, 0.4);
     height: 50px;
     line-height: 50px;
-    text-align: left;
     padding-left: 53px;
     cursor: pointer;
 }
+.project_form{
+    margin-top: 20px;
+    position: relative;
+    padding-left: 53px;
+}
+.close{
+    position: absolute;
+    right: 10px;
+    top: -29px;
+    font-size: 26px;
+}
+.input_label{
+    display: block;
+}
+.project_input{
+    margin: 13px 0;
+    width: 189px;
+    height: 26px;
+    border: 0.5px solid rgba(93, 110, 151, 0.4);
+}
+
+.project_input:focus {
+    outline: none;
+  }
