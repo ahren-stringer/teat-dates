@@ -5,6 +5,10 @@ import { Sequelize } from 'sequelize';
 import Connection from './models/Connection.js';
 import user from './routes/users.routes.js';
 import project from './routes/project.routes.js';
+import path from 'path'
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+export const __dirname = path.dirname(__filename);
 //API Config
 const app = expess();
 const port = process.env.PORT || 8001;
@@ -26,5 +30,12 @@ Connection
   .sync()
   .catch(err => console.error(err));
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(expess.static('client/build'))
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  })
+}
 //Listener
 app.listen(port, () => console.log('Server Starts on localhost', port));
