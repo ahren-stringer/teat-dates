@@ -10,7 +10,7 @@ router.post('/project', async (req, res) => {
         let project= await Project.create({name: req.body.name})
         res.json(project)
     } catch (e) {
-        res.status(500).json({ message: 'Пользователь не найден' })
+        res.status(500).json(e)
         console.log(e)
     }
 })
