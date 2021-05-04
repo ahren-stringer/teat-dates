@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './ProjectsList.css'
 import axios from 'axios'
 import { NavLink } from 'react-router-dom';
+import { baseURL } from '../../App';
 // localStorage.clear()
 function ProjectsList(props) {
     let [projects, setProjects] = useState(JSON.parse(localStorage.getItem('projects')))
@@ -24,7 +25,7 @@ function ProjectsList(props) {
         }
     }
     let addProject = async () => {
-        let project = await axios.post('http://localhost:8001/project', { name })
+        let project = await axios.post(baseURL+'project', { name })
         if (!localStorage.getItem('projects')) {
             localStorage.setItem('projects', JSON.stringify({}))
         }

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './AddingForm.css'
 import axios from 'axios'
 import { withRouter } from 'react-router';
+import { baseURL } from '../../App';
 let arr = [];
 let rows = 5;
 for (let i = 0; i < rows; i++) {
@@ -12,8 +13,6 @@ for (let i = 0; i < rows; i++) {
     })
 }
 function AddingForm(props) {
-    // let baseURL='http://localhost:8001/';
-    let baseURL='';
     debugger
     // let [rows, setRows] = useState(5)
     let [results, setResults] = useState(null)
