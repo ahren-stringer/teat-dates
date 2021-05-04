@@ -1,31 +1,19 @@
-import express from 'express';
+const express = require('express');
+const db = require('../models/index.js');
 // import Connection from '../models/Connection.js';
-import Project from '../models/Project.js';
+const Project = require('../models/project.js');
 const { Router } = express;
 const router = Router()
-import User from '../models/User.js'
+const User = require('../models/user.js')
 
 router.post('/project', async (req, res) => {
     try {
-        let project= await Project.create({name: req.body.name})
+        let project= await db.Project.create({name: req.body.name})
         res.json(project)
     } catch (e) {
         res.status(500).json(e)
         console.log(e)
     }
 })
-router.put('/users/:id', async (req, res) => {
-    try {
-        let user = await User.update({ date_last_activity: req.body.date_last_activity }, {
-            where: {
-                id: req.params.id
-            }
-        });
-        res.json(user)
-    } catch (e) {
-        res.status(500).json({ message: 'Пользователь не найден' })
-        console.log(e)
-    }
-})
 
-export default router
+module.exports = router
