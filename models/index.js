@@ -10,7 +10,7 @@ const db = {};
 
 let sequelize;
 if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+  sequelize = new Sequelize('postgres://nprrbpoynmfqyk:7c80e6821ba9d858e768fc36a375b20a4469d065873e7d43edb7a0d11480c1cb@ec2-107-22-83-3.compute-1.amazonaws.com:5432/d30rjfkqtdmabj');
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
