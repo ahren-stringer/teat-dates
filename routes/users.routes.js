@@ -3,24 +3,8 @@ const express = require('express');
 const db = require('../models/index.js');
 const { Router } = express;
 const router = Router()
-const User = require('../models/user.js')
+// const User = require('../models/user.js')
 
-router.get('/single_user/:id', async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        res.json(user)
-    } catch (e) {
-        res.status(500).json({ message: 'Пользователь не найден' })
-    }
-})
-router.get('/users', async (req, res) => {
-    try {
-        const users = await User.find();
-        res.json(users)
-    } catch (e) {
-        res.status(500).json({ message: 'Пользовательи не найдены' })
-    }
-})
 router.get('/users/calculate/:projectId', async (req, res) => {
     try {
         let users, count;
@@ -65,19 +49,6 @@ router.post('/users/register', async (req, res) => {
         });
         console.log('ssssssssss')
         res.json({ users })
-    } catch (e) {
-        res.status(500).json({ message: 'Пользователь не найден' })
-        console.log(e)
-    }
-})
-router.put('/users/:id', async (req, res) => {
-    try {
-        let user = await User.update({ date_last_activity: req.body.date_last_activity }, {
-            where: {
-                id: req.params.id
-            }
-        });
-        res.json(user)
     } catch (e) {
         res.status(500).json({ message: 'Пользователь не найден' })
         console.log(e)
