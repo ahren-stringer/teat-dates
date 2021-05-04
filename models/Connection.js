@@ -6,7 +6,7 @@ import { Sequelize } from 'sequelize';
 // });
 let Connection=null;
 if (!global.hasOwnProperty("models")) {
-sequelize = null;
+
 if (process.env.HEROKU_POSTGRESQL_BRONZE_URL) {
     // the application is executed on Heroku ... use the postgres         database
     Connection =new Sequelize(process.env.HEROKU_POSTGRESQL_BRONZE_URL,
