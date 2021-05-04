@@ -12,6 +12,8 @@ for (let i = 0; i < rows; i++) {
     })
 }
 function AddingForm(props) {
+    // let baseURL='http://localhost:8001/';
+    let baseURL='';
     debugger
     // let [rows, setRows] = useState(5)
     let [results, setResults] = useState(null)
@@ -69,7 +71,7 @@ function AddingForm(props) {
             console.log(arr)
             if (!rowsVal && !dateVal) {
                 debugger
-                await axios.post('http://localhost:8001/users/register', { users })
+                await axios.post(baseURL+'users/register', { users })
                 setProjectVal(false)
                 setRowsVal(false)
             }
@@ -80,7 +82,7 @@ function AddingForm(props) {
     }
     let calculate = async () => {
         if (props.match.params.project) {
-            let results = await axios.get('http://localhost:8001/users/calculate/' + JSON.parse(localStorage.getItem('projects'))[props.match.params.project])
+            let results = await axios.get(baseURL+'users/calculate/' + JSON.parse(localStorage.getItem('projects'))[props.match.params.project])
             let responseStop = new Date().getTime()
             console.log(results)
             let responseTime = responseStop - results.data.responseStart;
