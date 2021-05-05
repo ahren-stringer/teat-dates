@@ -69,7 +69,6 @@ router.post('/users/register', async (req, res) => {
             let user = await pool.query('INSERT INTO users (userId, project, date_registration, date_last_activity) VALUES ($1, $2, $3,$4)', [userId, project, date_registration, date_last_activity])
             users.push(user)
         });
-        console.log('ssssssssss')
         res.json({ users })
     } catch (e) {
         res.status(500).json({ message: 'Пользователь не найден' })
