@@ -26,16 +26,16 @@ function AddingForm(props) {
     let addUser = (e, index) => {
         let prop = e.target.name;
         let value = e.target.value;
-        let dateRegExp=/([0-3]?[0-9]).([0-1]?[0-9]).([12][09][0-9][0-9])/;
+        let dateRegExp = /([0-3]?[0-9]).([0-1]?[0-9]).([12][09][0-9][0-9])/;
         if (
             (value.search(dateRegExp) != -1)
             && (prop == 'date_registration' || prop == 'date_last_activity')
-            ) {
-            let date=value.match(dateRegExp)
-            let year=date[3];
-            let mo=date[2];
-            let da=date[1];
-            arr[index][prop] = new Date(+date[3], +date[2]-1, +date[1])
+        ) {
+            let date = value.match(dateRegExp)
+            let year = date[3];
+            let mo = date[2];
+            let da = date[1];
+            arr[index][prop] = new Date(+date[3], +date[2] - 1, +date[1])
             debugger
             // arr[index][prop] = new Date(+value.slice(6), +value.slice(3, 5), +value.slice(0, 2))
             console.log(arr)
@@ -70,7 +70,7 @@ function AddingForm(props) {
             console.log(arr)
             if (!rowsVal && !dateVal) {
                 debugger
-                await axios.post(baseURL+'users/register', { users })
+                await axios.post(baseURL + 'users/register', { users })
                 setProjectVal(false)
                 setRowsVal(false)
             }
@@ -81,14 +81,16 @@ function AddingForm(props) {
     }
     let calculate = async () => {
         if (props.match.params.project) {
-            let results = await axios.get(baseURL+'users/calculate/' + JSON.parse(localStorage.getItem('projects'))[props.match.params.project])
-            let responseStop = new Date().getTime()
-            console.log(results)
-            let responseTime = responseStop - results.data.responseStart;
-            results.data.responseTime = responseTime
-            setResults(results.data)
-            console.log('responseStop',responseStop)
-            console.log(responseStop - results.data.responseStart)
+            axios.get(baseURL + 'users/calculate/' + JSON.parse(localStorage.getItem('projects'))[props.match.params.project])
+                .then(results=>{
+                    let responseStop = new Date().getTime()
+                    console.log(results)
+                    let responseTime = responseStop - results.data.responseStart;
+                    results.data.responseTime = responseTime
+                    setResults(results.data)
+                    console.log('responseStop', responseStop)
+                    console.log(responseStop - results.data.responseStart)
+                })
         }
     }
     return (
