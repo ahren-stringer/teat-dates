@@ -87,6 +87,7 @@ function AddingForm(props) {
             let responseTime = responseStop - results.data.responseStart;
             results.data.responseTime = responseTime
             setResults(results.data)
+            console.log('responseStop',responseStop)
             console.log(responseStop - results.data.responseStart)
         }
     }
