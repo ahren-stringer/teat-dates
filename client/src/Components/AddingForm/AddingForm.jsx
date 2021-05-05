@@ -82,7 +82,7 @@ function AddingForm(props) {
     let calculate = async () => {
         if (props.match.params.project) {
             let results = await axios.get(baseURL+'users/calculate/' + JSON.parse(localStorage.getItem('projects'))[props.match.params.project])
-            let responseStop = new Date()
+            let responseStop = new Date().getTime()
             console.log(results)
             let responseTime = responseStop - results.data.responseStart;
             results.data.responseTime = responseTime
