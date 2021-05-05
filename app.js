@@ -37,7 +37,5 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
   })
 }
-console.log(__filename)
-console.log(__dirname)
 //Listener
 app.listen(port, () => console.log('Server Starts on localhost', port));

@@ -30,7 +30,7 @@ function ProjectsList(props) {
             localStorage.setItem('projects', JSON.stringify({}))
         }
         let projectObj = JSON.parse(localStorage.getItem('projects'));
-        projectObj[name] = project.data.id;
+        projectObj[name] = project.data.rows[0].id;
         localStorage.setItem('projects', JSON.stringify(projectObj))
         debugger
         setProjects(JSON.parse(localStorage.getItem('projects')))
