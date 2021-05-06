@@ -34,6 +34,7 @@ debugger
                     <div className='project_validate' style={!props.projectVal ? { display: 'none' } : { display: 'block' }}>Вам нужно выбрать проект</div>
                     <div className='project_validate' style={!props.rowsVal ? { display: 'none' } : { display: 'block' }}>Нужно заполнить все поля в сторке</div>
                     <div className='project_validate' style={!props.dateVal ? { display: 'none' } : { display: 'block' }}>Неправильный формат даты</div>
+                    <div className='project_validate' style={!props.noUsers ? { display: 'none' } : { display: 'block' }}>Введите поьзователей</div>
                     <div className='succes' style={!props.succes ? { display: 'none' } : { display: 'block' }}>Пользователи сохранены</div>
                 </div>
                 {!props.results ? null : props.calcVal
@@ -57,6 +58,7 @@ let mapStateToProps = (state) => {
         dateVal: state.users.dateVal,
         calcVal: state.users.calcVal,
         succes: state.users.succes,
+        noUsers: state.users.noUsers,
     }
 }
 

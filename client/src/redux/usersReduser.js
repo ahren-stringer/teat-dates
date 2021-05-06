@@ -29,7 +29,8 @@ let init = {
     rowsVal: false,
     dateVal: false,
     calcVal: false,
-    succes: false
+    succes: false,
+    noUsers: false
 };
 
 const usersReduser = (state = init, action) => {
@@ -46,6 +47,8 @@ const usersReduser = (state = init, action) => {
             return { ...state, calcVal: action.calcVal }
         case 'SET_SUCCES':
             return { ...state, succes: action.succes }
+        case 'SET_NO_USERS':
+            return { ...state, noUsers: action.noUsers }
         case SET_USERS:
             action.prevUsers[action.index][action.prop] = action.value
             let arr = [...action.prevUsers];
@@ -75,6 +78,7 @@ export const setCalcVal = (calcVal) => ({ type: SET_CALC_VAL, calcVal });
 export const setUsers = (prevUsers, index, prop, value) => ({ type: SET_USERS, prevUsers, index, prop, value });
 export const setUsersKol = (prevUsers) => ({ type: SET_USERS_KOL, prevUsers });
 export const setSucces = (succes) => ({ type: 'SET_SUCCES', succes });
+export const setNoUsers = (noUsers) => ({ type: 'SET_NO_USERS', noUsers });
 
 export const AddUserThunk = (users, index, e) =>
     async (dispatch) => {
@@ -111,7 +115,11 @@ export const sendUsersThunk = (project, rowsVal, usersArr) =>
                 dispatch(setRowsVal(true))
                 return
             }
-
+            if (users.length===0) {
+                debugger
+                dispatch(setNoUsers(true))
+                return
+            }
             users = users.map(item => {
                 let dateRegExp = /([0-3]?[0-9]).([0-1]?[0-9]).([12][09][0-9][0-9])/;
                 let date_reg, date_last_act;
@@ -145,9 +153,9 @@ export const sendUsersThunk = (project, rowsVal, usersArr) =>
                 dispatch(setRowsVal(false))
                 dispatch(setCalcVal(false))
                 dispatch(setSucces(true))
-                setTimeout(()=>{
+                setTimeout(() => {
                     dispatch(setSucces(false))
-                },3000)
+                }, 3000)
             }
         } else if (!project) {
             dispatch(setProjectVal(true))
