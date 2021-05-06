@@ -24,7 +24,7 @@ app.use('', project)
 
 // Connection
 //   .authenticate()
-//   .catch(err => console.error(err));
+//   .catch(err => console.error(err))
 
 // Connection
 //   .sync()

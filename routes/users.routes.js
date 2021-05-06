@@ -10,15 +10,20 @@ router.get('/users/calculate/:projectId', async (req, res) => {
     try {
         let users, count;
         let reqDate = new Date().getTime();
-        let r1 = await pool.query('Select COUNT(*) from "users" where (date_last_activity-date_registration)>7 and project=' + req.params.projectId,
+        let r1 = await pool.query('Select COUNT(*) from "users" where project=' + req.params.projectId,
             (error, results) => {
                 console.log(results.rows[0].count)
+                count = results.rows[0].count
 
-                users = results.rows[0].count
-                pool.query('Select COUNT(*) from "users" where project=' + req.params.projectId,
+                if (count == 0) {
+                    res.status(501).json({ message: 'нет пользователей, зарегистрированных в этом проекте' })
+                    return
+                }
+
+                pool.query('Select COUNT(*) from "users" where (date_last_activity-date_registration)>7 and project=' + req.params.projectId,
                     (error, results) => {
                         console.log(results.rows[0].count)
-                        count = results.rows[0].count
+                        users = results.rows[0].count
 
                         let resDate = new Date().getTime();
                         let reqTime = resDate - reqDate;

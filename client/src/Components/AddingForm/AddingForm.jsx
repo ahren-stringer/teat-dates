@@ -3,57 +3,36 @@ import './AddingForm.css'
 import axios from 'axios'
 import { withRouter } from 'react-router';
 import { baseURL } from '../../App';
-let arr = [];
-let rows = 5;
-for (let i = 0; i < rows; i++) {
-    arr.push({
-        userId: '',
-        date_registration: '',
-        date_last_activity: '',
-    })
-}
+import { connect } from 'react-redux';
+import { setCalcVal, setDateVal, setProjectVal, setResults, setRowsVal,setUsers,setUsersKol } from '../../redux/usersReduser';
+
 function AddingForm(props) {
-    debugger
-    // let [rows, setRows] = useState(5)
-    let [results, setResults] = useState(null)
-    let [projectVal, setProjectVal] = useState(false)
-    let [rowsVal, setRowsVal] = useState(false)
-    let [dateVal, setDateVal] = useState(false)
+debugger
+    let [succes, setSucces]=useState(false)
+    let [loader, setLoader]=useState(false)
     useEffect(() => {
-        setProjectVal(false)
+        props.setProjectVal(false)
     }, [props.match.params.project])
 
     let addUser = (e, index) => {
+        props.setRowsVal(false)
+        props.setDateVal(false)
         let prop = e.target.name;
-        let value = e.target.value;
-        let dateRegExp = /([0-3]?[0-9]).([0-1]?[0-9]).([12][09][0-9][0-9])/;
-        if (
-            (value.search(dateRegExp) != -1)
-            && (prop == 'date_registration' || prop == 'date_last_activity')
-        ) {
-            let date = value.match(dateRegExp)
-            let year = date[3];
-            let mo = date[2];
-            let da = date[1];
-            arr[index][prop] = new Date(+date[3], +date[2] - 1, +date[1])
-            debugger
-            // arr[index][prop] = new Date(+value.slice(6), +value.slice(3, 5), +value.slice(0, 2))
-            console.log(arr)
-            setDateVal(false)
-        } else {
-            arr[index][prop] = value
-            console.log(arr)
-        }
+        let value = e.target.value;  
+        props.setUsers(props.users,index,prop,value)
+
     }
     let sendUsers = async () => {
-        if (props.match.params.project && !rowsVal) {
-            debugger
-            setRowsVal(false)
-            setProjectVal(false)
+        if (props.match.params.project && !props.rowsVal) {
+            setLoader(true)
+            let rowsVal=false;
+            let dateVal=false;
+            props.setRowsVal(false)
+            props.setProjectVal(false)
+            let dateRegExp = /([0-3]?[0-9]).([0-1]?[0-9]).([12][09][0-9][0-9])/;
             let kol = [];
-            let users = arr.filter(item => {
+            let users = props.users.filter(item => {
                 let flag = true
-                let all_fields = true;
                 let kol_item = 0;
                 for (let key in item) {
                     if (item[key] == '') {
@@ -61,37 +40,76 @@ function AddingForm(props) {
                         kol_item = kol_item + 1
                     }
                 }
-                if (typeof (item.date_registration) == 'string' && typeof (date_last_activity) == 'string') setDateVal(true)
                 kol.push(kol_item)
                 if (flag) return item
-            }).map(item => ({ ...item, project: JSON.parse(localStorage.getItem('projects'))[props.match.params.project] }))
-            if (kol.some(item => kol > 0 && kol < 3)) setRowsVal(true)
+            })
+
             console.log(users)
-            console.log(arr)
-            if (!rowsVal && !dateVal) {
-                debugger
+            if (kol.some(item => (item == 1) || (item == 2))) {
+                props.setRowsVal(true)
+                return
+            }
+
+            users=users.map(item => {
+                let dateRegExp = /([0-3]?[0-9]).([0-1]?[0-9]).([12][09][0-9][0-9])/;
+                let date_reg,date_last_act;
+                if ((item.date_registration.search(dateRegExp) != -1)) {
+                    let date = item.date_registration.match(dateRegExp)
+                    date_reg=new Date(+date[3], +date[2] - 1, +date[1])
+                    debugger
+                }
+                if ((item.date_last_activity.search(dateRegExp) != -1)) {
+                    let date = item.date_last_activity.match(dateRegExp)
+                    date_last_act=new Date(+date[3], +date[2] - 1, +date[1])
+                }
+                if ((!date_reg || !date_last_act)
+                && item.date_registration !== ''
+                && item.date_last_activity !== '') {
+                    props.setDateVal(true)
+                    dateVal=true
+            }
+                return { ...item,
+                     project: JSON.parse(localStorage.getItem('projects'))[props.match.params.project],
+                     date_registration:date_reg,
+                     date_last_activity:date_last_act }
+            })
+            debugger
+            if (!props.rowsVal && !dateVal) {
                 await axios.post(baseURL + 'users/register', { users })
-                setProjectVal(false)
-                setRowsVal(false)
+                setLoader(false)
+                props.setProjectVal(false)
+                props.setRowsVal(false)
+                props.setCalcVal(false)
+                setTimeout(() => {
+                    setSucces(true)
+                }, 2000);
             }
         } else if (!props.match.params.project) {
-            setProjectVal(true)
+            props.setProjectVal(true)
         }
-        console.log(rowsVal)
+        console.log(props.rowsVal)
     }
     let calculate = async () => {
         if (props.match.params.project) {
             let responseStart = new Date().getTime()
             axios.get(baseURL + 'users/calculate/' + JSON.parse(localStorage.getItem('projects'))[props.match.params.project])
-                .then(results=>{
+                .then(results => {
                     let responseStop = new Date().getTime()
                     console.log(results)
                     let responseTime = responseStop - responseStart;
                     results.data.responseTime = responseTime
-                    setResults(results.data)
-                    console.log('responseStop', responseStop)
-                    console.log(responseStop - responseStart)
+                    props.setResults(results.data)
+                }, results => {
+                    debugger
+                    props.setCalcVal(true)
+                    props.setResults(results)
+                    setTimeout(() => {
+                        props.setCalcVal(false)
+                        props.setResults(null)
+                    }, 2000);
                 })
+        }else{
+            props.setProjectVal(true)
         }
     }
     return (
@@ -102,29 +120,45 @@ function AddingForm(props) {
                     : <div className='title'>Project: {props.match.params.project}</div>}
                 <table>
                     <tr><td>UserID</td><td>Date Registration</td><td>Date Last Activity</td></tr>
-                    {arr.map((item, index) => <tr>
-                        <td><input className='table_input' name='userId' onChange={(e) => { addUser(e, index) }} /></td>
-                        <td><input className='table_input' name='date_registration' onChange={(e) => { addUser(e, index) }} /></td>
-                        <td><input className='table_input' name='date_last_activity' onChange={(e) => { addUser(e, index) }} /></td>
+                    {props.users.map((item, index) => <tr>
+                        <td><input className='table_input' name='userId' value={item.userId} onChange={(e) => { addUser(e, index) }} /></td>
+                        <td><input className='table_input' name='date_registration' value={item.date_registration.toString()} onChange={(e) => { addUser(e, index) }} /></td>
+                        <td><input className='table_input' name='date_last_activity' value={item.date_last_activity} onChange={(e) => { addUser(e, index) }} /></td>
                     </tr>)}
                 </table>
                 <div className='btn_wrapper'>
                     <div className='add_btn'>
-                        <button className='btn' onClick={() => rows + 5}>Add More</button>
+                        <button className='btn' onClick={() => props.setUsersKol(props.users)}>Add More</button>
                     </div>
                     <button className='btn' onClick={sendUsers}>Save</button>
                     <button className='btn' onClick={calculate}>Calculate</button>
-                    <div className='project_validate' style={!projectVal ? { display: 'none' } : { display: 'block' }}>Вам нужно выбрать проект</div>
-                    <div className='project_validate' style={!rowsVal ? { display: 'none' } : { display: 'block' }}>Нужно заполнить все поля в сторке</div>
-                    <div className='project_validate' style={!dateVal ? { display: 'none' } : { display: 'block' }}>Неправильный формат даты</div>
+                    <div className='project_validate' style={!props.projectVal ? { display: 'none' } : { display: 'block' }}>Вам нужно выбрать проект</div>
+                    <div className='project_validate' style={!props.rowsVal ? { display: 'none' } : { display: 'block' }}>Нужно заполнить все поля в сторке</div>
+                    <div className='project_validate' style={!props.dateVal ? { display: 'none' } : { display: 'block' }}>Неправильный формат даты</div>
+                    <div className='succes' style={!loader ? { display: 'none' } : { display: 'block' }}>Loading...</div>
+                    <div className='succes' style={!succes ? { display: 'none' } : { display: 'block' }}>Пользователи сохранены</div>
                 </div>
-                {!results ? null : <table>
-                    <tr><td>Rolling Retation 7 day</td><td>Выборка из БД</td><td>Время расчета</td><td>Время вывода значений</td></tr>
-                    <tr><td>{results.RR7} %</td><td>{results.reqTime} мс</td><td>{results.calculateTime} мс</td><td>{results.responseTime} мс</td></tr>
-                </table>}
+                {!props.results ? null : props.calcVal
+                    ? <div className='project_validate'>{props.results.response.data.message}</div>
+                    : <table>
+                        <tr><td>Rolling Retation 7 day</td><td>Выборка из БД</td><td>Время расчета</td><td>Время вывода значений</td></tr>
+                        <tr><td>{props.results.RR7} %</td><td>{props.results.reqTime} мс</td><td>{props.results.calculateTime} мс</td><td>{props.results.responseTime} мс</td></tr>
+                    </table>}
             </div>
         </div>
     );
 }
 
-export default withRouter(AddingForm);
+let mapStateToProps = (state) => {
+    return {
+        users: state.users.users,
+        usersKol: state.users.usersKol,
+        results: state.users.results,
+        projectVal: state.users.projectVal,
+        rowsVal: state.users.rowsVal,
+        dateVal: state.users.dateVal,
+        calcVal: state.users.calcVal
+    }
+}
+
+export default connect(mapStateToProps,{setCalcVal, setDateVal, setProjectVal, setResults, setRowsVal,setUsers,setUsersKol})(withRouter(AddingForm));

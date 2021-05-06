@@ -45,12 +45,18 @@ td{
     border-radius: 10px;
     border: none;
     margin-right: 10px;
+    cursor: pointer;
 }
 .add_btn{
     margin-bottom: 20px;
+    cursor: pointer;
 }
 .project_validate{
     font-size: 13px;
     color: red;
+    margin-top: 10px;
+}
+.succes{
+    font-size: 13px;
     margin-top: 10px;
 }
